@@ -1,7 +1,7 @@
 import { component$, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Grid, Resize, Sort, Group, ContextMenu, Edit, Page, PdfExport, ExcelExport } from '@syncfusion/ej2-grids';
-import { data  } from './datasource.ts';
+import { data  } from './datasource';
 
  
 // Grid data
