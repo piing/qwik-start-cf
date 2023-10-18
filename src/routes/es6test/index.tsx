@@ -56,7 +56,7 @@ export default component$(() => {
   useVisibleTask$(()=>{
       Grid.Inject(Resize, Sort, Group, Edit, ContextMenu, Page, PdfExport, ExcelExport);
 
-      let grid: Grid = new Grid({
+      const grid: Grid = new Grid({
           dataSource: data,
           allowSorting: true,
           allowPaging: true,
