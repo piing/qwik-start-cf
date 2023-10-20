@@ -1,9 +1,116 @@
-import { component$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useSignal, useStore, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Grid, Resize, Sort, Group, ContextMenu, Edit, Page, PdfExport, ExcelExport } from '@syncfusion/ej2-grids';
-import { data  } from './datasource';
+import { Toolbar, Grid, Resize, Sort, Group, ContextMenu, Edit, Page, PdfExport, ExcelExport, CellSaveArgs, CellEditArgs, RowSelectEventArgs } from '@syncfusion/ej2-grids';
+import { data,DataInter  } from './datasource';
+import { DataManager } from "@syncfusion/ej2-data";
 
- 
+interface DataListInter {
+  list: DataInter[];
+}
+
+export default component$(() => {
+  
+  const store = useStore<DataInter[]>(data);
+  //onst DM=new  DataManager(data);
+
+  console.log('Render: <App>');
+  
+  useTask$(({ track }) => {
+    track(() => store);
+    console.log('useTask:track'+store);
+  });
+
+
+  
+  useVisibleTask$(()=>{
+    Grid.Inject(Edit, Toolbar);
+      let grid: Grid = new Grid({
+        dataSource: store,
+        toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel'],
+        editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true },
+        columns: [
+            { field: 'OrderID', headerText: 'Order ID', textAlign: 'Right', width: 100, isPrimaryKey: true },
+            { field: 'Custom
+            erID', headerText: 'Customer ID', width: 120 },
+            { field: 'Freight', hneaderText: 'Freight', textAlign: 'Right', width: 120, format: 'C2' },
+            { field: 'ShipCountry', headerText: 'Ship Country', width: 150 }
+        ],
+        height: 265,
+        enablePersistence:true,
+
+    });
+    grid.appendTo('#Grid');
+    /*
+    document.getElementById('updatebutton').addEventListener('click', function(e) {
+      store.list=grid.getCurrentViewRecords as unknown as DataInter[];
+    });
+    */
+          
+
+      /*
+      function rowselected(e:RowSelectEventArgs):void{
+        alert(e.data);
+      };
+      */
+
+     const updatebtnf=()=>{
+      /*
+      store.map((item,index)=>{
+          item.CustomerID=item.CustomerID+"!"
+        });
+        store.push({
+          CustomerID: "zzzzzzz", OrderID: 1233, Freight: 99.99, ShipCity: "TZ",
+          EmployeeID: 0,
+          OrderDate: new Date(8364186e4),
+          ShipName: "",
+          ShipAddress: "",
+          ShipRegion: "",
+          ShipPostalCode: "",
+          ShipCountry: "",
+          Verified: false
+        });
+        */
+        console.log(store[0].CustomerID);
+       console.log(store[1].CustomerID);
+       store[0].CustomerID="xxx";
+       //store.reverse();
+        grid.refresh();
+        console.log(store[0].CustomerID);
+        console.log(store[1].CustomerID);
+      };
+     document.getElementById("updatebutton")?.addEventListener('click', updatebtnf);
+  });
+return (
+  <>
+    <h5>hello</h5>
+
+          
+    <div id='container'>
+        <div id='Grid'></div>
+    </div>
+          <hr/>
+          <button id="updatebutton">Update</button>
+      <ul>
+        {store.map((item, index) => (
+          <li key={`items-${index}`}>{item.OrderID+item.CustomerID}</li>
+        ))}
+      </ul>
+      <hr/>
+      
+  </>
+);
+});
+
+export const head: DocumentHead = {
+  title: "Welcome to Qwik",
+  meta: [
+    {
+      name: "description",
+      content: "Qwik site description",
+    },
+  ],
+};
+
 // Grid data
 /*
 const data: Object[] = [
@@ -51,49 +158,3 @@ export default component$(() => {
   );
 });
 */
-export default component$(() => {
-    
-  useVisibleTask$(()=>{
-      Grid.Inject(Resize, Sort, Group, Edit, ContextMenu, Page, PdfExport, ExcelExport);
-
-      const grid: Grid = new Grid({
-          dataSource: data,
-          allowSorting: true,
-          allowPaging: true,
-          editSettings: {allowEditing: true, allowDeleting: true},
-          allowPdfExport: true,
-          allowExcelExport: true,
-          contextMenuItems: ['AutoFit', 'AutoFitAll', 'SortAscending', 'SortDescending',
-                      'Copy', 'Edit', 'Delete', 'Save', 'Cancel',
-                      'PdfExport', 'ExcelExport', 'CsvExport', 'FirstPage', 'PrevPage',
-                      'LastPage', 'NextPage'],
-          columns: [
-              { field: 'OrderID', headerText: 'Order ID', width: 200, textAlign: 'Right'},
-              { field: 'Freight', width: 150, format: 'C2', textAlign: 'Right', editType: 'numericedit' },
-              { field: 'ShipName', headerText: 'Ship Name', width: 300 },
-              { field: 'ShipCountry', headerText: 'Ship Country',  width: 200 },
-              { field: 'ShipCity', headerText: 'Ship City', width: 200 }
-          ]
-      });
-      grid.appendTo('#Grid');
-  })
-return (
-  <>
-    <h5>hello</h5>
-    <div>
-          
-          <div id="Grid"></div>
-      </div>
-  </>
-);
-});
-
-export const head: DocumentHead = {
-  title: "Welcome to Qwik",
-  meta: [
-    {
-      name: "description",
-      content: "Qwik site description",
-    },
-  ],
-};
