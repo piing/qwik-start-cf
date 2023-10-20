@@ -30,9 +30,8 @@ export default component$(() => {
         editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true },
         columns: [
             { field: 'OrderID', headerText: 'Order ID', textAlign: 'Right', width: 100, isPrimaryKey: true },
-            { field: 'Custom
-            erID', headerText: 'Customer ID', width: 120 },
-            { field: 'Freight', hneaderText: 'Freight', textAlign: 'Right', width: 120, format: 'C2' },
+            { field: 'CustomerID', headerText: 'Customer ID', width: 120 },
+            { field: 'Freight', headerText: 'Freight', textAlign: 'Right', width: 120, format: 'C2' },
             { field: 'ShipCountry', headerText: 'Ship Country', width: 150 }
         ],
         height: 265,
