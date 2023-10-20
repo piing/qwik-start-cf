@@ -1,13 +1,13 @@
-import { component$, useSignal, useStore, useTask$, useVisibleTask$ } from "@builder.io/qwik";
+import { component$, useStore, useTask$, useVisibleTask$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
-import { Toolbar, Grid, Resize, Sort, Group, ContextMenu, Edit, Page, PdfExport, ExcelExport, CellSaveArgs, CellEditArgs, RowSelectEventArgs } from '@syncfusion/ej2-grids';
+import { Toolbar, Grid, Edit } from '@syncfusion/ej2-grids';
 import { data,DataInter  } from './datasource';
-import { DataManager } from "@syncfusion/ej2-data";
 
+/*
 interface DataListInter {
   list: DataInter[];
 }
-
+*/
 export default component$(() => {
   
   const store = useStore<DataInter[]>(data);
@@ -24,7 +24,7 @@ export default component$(() => {
   
   useVisibleTask$(()=>{
     Grid.Inject(Edit, Toolbar);
-      let grid: Grid = new Grid({
+    const grid: Grid = new Grid({
         dataSource: store,
         toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel'],
         editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true },

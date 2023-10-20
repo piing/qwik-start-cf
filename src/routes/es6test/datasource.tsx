@@ -12,8 +12,8 @@ export interface DataInter {
     ShipPostalCode:string;
     ShipCountry:string;
     Freight:number;
-    Verified:boolean;
-  };
+    Verified:boolean
+  }
 
 export const data: DataInter[] = [
     {
