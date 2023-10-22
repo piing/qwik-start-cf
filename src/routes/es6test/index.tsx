@@ -1,5 +1,5 @@
-import { component$, useStore, useTask$, useVisibleTask$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import { component$, useStore, useTask$, useVisibleTask$,$ } from "@builder.io/qwik";
+import { server$, type DocumentHead } from "@builder.io/qwik-city";
 import { Toolbar, Grid, Edit } from '@syncfusion/ej2-grids';
 import { data,DataInter  } from './datasource';
 
@@ -14,7 +14,19 @@ export default component$(() => {
   //onst DM=new  DataManager(data);
 
   console.log('Render: <App>');
-  
+  const printStore=server$(()=>{
+    
+    store.forEach((item)=>{
+      console.log(item.OrderID.toString()+' '+item.CustomerID)
+    })
+    console.log('------------------------------------')
+    
+   /*
+    store.map((item) => {
+      console.log(item.OrderID.toString()+' '+item.CustomerID)}
+    )
+    */
+  })
   useTask$(({ track }) => {
     track(() => store);
     console.log('useTask:track'+store);
@@ -69,15 +81,16 @@ export default component$(() => {
           Verified: false
         });
         */
-        console.log(store[0].CustomerID);
-       console.log(store[1].CustomerID);
        store[0].CustomerID="xxx";
        //store.reverse();
         grid.refresh();
-        console.log(store[0].CustomerID);
-        console.log(store[1].CustomerID);
+        printStore();
       };
      document.getElementById("updatebutton")?.addEventListener('click', updatebtnf);
+     /*
+     if(document.getElementById("updatebutton")){
+     document.getElementById("updatebutton").onclick=updatebtnf;}
+     */
   });
 return (
   <>
@@ -89,9 +102,15 @@ return (
     </div>
           <hr/>
           <button id="updatebutton">Update</button>
+          <button id="serverupdatebut" onClick$={server$(()=>{
+            store.forEach((item)=>{
+              console.log(item.OrderID.toString()+' '+item.CustomerID)
+            })
+            console.log('------------------------------------')
+          })}>ServerUpdate</button>
       <ul>
         {store.map((item, index) => (
-          <li key={`items-${index}`}>{item.OrderID+item.CustomerID}</li>
+          <li key={`items-${index}`}>{item.OrderID+' '+item.CustomerID}</li>
         ))}
       </ul>
       <hr/>
