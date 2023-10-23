@@ -14,7 +14,7 @@ export default component$(() => {
   //onst DM=new  DataManager(data);
 
   console.log('Render: <App>');
-  const printStore=server$(()=>{
+  const printStore=$(()=>{
     
     store.forEach((item)=>{
       console.log(item.OrderID.toString()+' '+item.CustomerID)
@@ -81,7 +81,7 @@ export default component$(() => {
           Verified: false
         });
         */
-       store[0].CustomerID="xxx";
+       //store[0].CustomerID="xxx";
        //store.reverse();
         grid.refresh();
         printStore();
@@ -94,7 +94,6 @@ export default component$(() => {
   });
 return (
   <>
-    <h5>hello</h5>
 
           
     <div id='container'>
@@ -103,7 +102,9 @@ return (
           <hr/>
           <button id="updatebutton">Update</button>
           <button id="serverupdatebut" onClick$={server$(()=>{
-            store.forEach((item)=>{
+            //store[0].CustomerID="xxx";
+            store.map((item)=>{
+              item.CustomerID=item.CustomerID+"!";
               console.log(item.OrderID.toString()+' '+item.CustomerID)
             })
             console.log('------------------------------------')
